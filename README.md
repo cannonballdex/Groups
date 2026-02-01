@@ -6,7 +6,7 @@ This README is derived from the behavior and bindings implemented in `init.lua` 
 
 ## Key features
 - ImGui-based UI to view saved groups, save current group, form a saved group, queue remote disband, and delete saved groups.
-- Persists saved groups to disk (canonical file: `Groups.ini` in `mq.configDir`) using lib.LIP.
+- Persists saved groups to disk (canonical file: `Groups.ini` in `mq.configDir`) using lib.LCP.
 - Save auto-prefix: saving with a suffix (e.g. `raid`) will automatically be saved as `<YourCleanName>_raid` if not already prefixed.
 - Groups are shown in the UI organized into tabs labeled by each leader's CleanName (leader -> list of saved groups).
 - Buttons display the full canonical INI section name (including the CleanName_ prefix) so actions operate on the exact saved section.
@@ -19,10 +19,10 @@ This README is derived from the behavior and bindings implemented in `init.lua` 
 - MacroQuest (mq) with Lua support
 - ImGui bindings available to Lua (mq.imgui)
 - mq.Icons (icon constants used in the UI)
-- lib/LIP.lua available for INI serialization/deserialization (the script requires `lib.LIP`)
+- lib/LCP.lua available for INI serialization/deserialization (the script requires `lib.LCP`)
 
 ## Installation
-1. Copy `groups.lua` (or `init.lua` from this repo) and `LIP.lua` into a folder under your MacroQuest `lua` directory (for example `lua/groups`).
+1. Copy `groups.lua` (or `init.lua` from this repo) and `LCP.lua` into a folder under your MacroQuest `lua` directory (for example `lua/groups`).
 2. From inside the game or MQ console, run:
    ```
    /lua run groups
@@ -86,13 +86,12 @@ Notes:
 
 ## Troubleshooting
 - If the ImGui window doesn't appear ensure `mq.imgui` is available and working in your MacroQuest setup.
-- If you see errors related to `lib.LIP`, confirm `LIP.lua` is present in `lua/lib/LIP.lua` or adjust require paths.
+- If you see errors related to `lib.LCP`, confirm `LCP.lua` is present in `lua/lib/LCP.lua` or adjust require paths.
 - If the script appears unresponsive, stop it with `/lua stop groups` and check MQ logs or the console for messages.
 
 ## Files of interest
 - `init.lua` (this script) — UI, worker loop, settings load/save, merc scanning, commands.
-- `lib/LIP.lua` — INI load/save helper used for settings persistence (required).
+- `lib/LCP.lua` — INI load/save helper used for settings persistence (required).
 
 ## License & attribution
-- The LIP INI parser contains contributions and attributions (see `LIP.lua` for license header).
-- This implementation and rebranding are by cannonballdex and are derived from earlier MakeCrew/Crew code. See the top of `init.lua` for in-file attribution and change notes.
+- The LCP Config Parser contains contributions and attributions (see `LCP.lua` for license header)..

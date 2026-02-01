@@ -22,7 +22,7 @@ This README is derived from the behavior and bindings implemented in `init.lua` 
 - DanNet (MQ2DanNet) plugin — required (see note below)
 - `lib/LCP.lua` available for INI serialization/deserialization (the script requires `lib.LCP`)
 
-Important: DanNet is used by this plugin for reliable name/merc lookups and integrations. The script attempts to load the DanNet plugin at startup if it is not already loaded and will turn off DanNet's `FullNames` mode (if enabled) to avoid name formatting differences. If automatic loading fails, you must install/enable DanNet manually.
+Important: DanNet is used by this plugin for reliable name/merc lookups and integrations. If automatic loading fails, you must install/enable DanNet manually.
 
 ## Installation
 1. Place the repository folder under your MacroQuest `lua` directory, for example:

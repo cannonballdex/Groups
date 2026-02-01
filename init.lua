@@ -2,7 +2,7 @@
 
 ---@type Mq
 local mq = require('mq')
-local LIP = require('lib.LIP')
+local LCP = require('lib.LCP')
 local ICONS = require('mq.Icons')
 ---@type ImGui
 require 'ImGui'
@@ -111,7 +111,7 @@ local Roles = {
 -- Settings load/save --------------------------------------------------------
 local function save_settings()
   if not settings_path then return end
-  safe(function() LIP.save(settings_path, settings) end)
+  safe(function() LCP.save(settings_path, settings) end)
 end
 
 local function refresh_sections_from_ini()
@@ -145,12 +145,12 @@ local function load_settings()
     end
   end
 
-  -- Ensure canonical exists: if not, create empty settings file via LIP.save
+  -- Ensure canonical exists: if not, create empty settings file via LCP.save
   if not file_exists(canonical_path) then
     -- initialize empty settings table on disk
     settings = {}
     settings_path = canonical_path
-    safe(function() LIP.save(settings_path, settings) end)
+    safe(function() LCP.save(settings_path, settings) end)
     output(('Created empty %s'):format(canonical))
   end
 
@@ -161,7 +161,7 @@ local function load_settings()
 
   -- Load settings if present
   if file_exists(settings_path) then
-    settings = safe(function() return LIP.load(settings_path) end) or {}
+    settings = safe(function() return LCP.load(settings_path) end) or {}
   else
     settings = {}
     save_settings()

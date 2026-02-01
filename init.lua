@@ -6,6 +6,19 @@ local LCP = require('lib.LCP')
 local ICONS = require('mq.Icons')
 ---@type ImGui
 require 'ImGui'
+
+local function ensure_dannet_loaded()
+  print('\agPlugin \atMQ2DanNet \ay is required.')
+  print('\ayLOADING.. \agPlugin \atDanNet')
+  mq.cmd('/plugin dannet')
+  -- give the plugin a moment to initialize
+  mq.delay(3000)
+end
+
+if not mq.TLO.Plugin('mq2dannet')() then
+  ensure_dannet_loaded()
+end
+
 -- reload tracking
 local last_ini_raw = nil
 -- Disable config debug highlight conflicts if available

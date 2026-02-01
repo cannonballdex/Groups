@@ -851,17 +851,10 @@ local function main()
     end
   end
 
-  -- left column: save/delete
-  ImGui.Text('Add Group: ')
-  ImGui.SameLine()
-  ImGui.SetCursorPosX(100)
-  ImGui.SetNextItemWidth(150)
-  -- Visible input: only the suffix. We add CleanName_ invisibly when saving.
-  SaveGroup, _ = ImGui.InputText('##SaveGroup', SaveGroup or '')
-  ImGui.SameLine()
-
+  ImGui.Spacing()
+  
   -- Save handler: prepend CleanName_ invisibly when issuing the save command
-  if ImGui.Button(string.format(ICONS.FA_USER_PLUS)) then
+  if ImGui.Button(string.format('%s Add Group', ICONS.FA_USER_PLUS)) then
     local suffix = tostring(SaveGroup or '')
     if suffix == '' then
       push_notification('Please enter a group label.', {1,0.2,0.2,1})
@@ -883,23 +876,21 @@ local function main()
       SaveGroup = ''
     end
   end
-  HelpMarker('Save Group (the player CleanName_ prefix is added automatically).')
+  ImGui.SameLine()
+  ImGui.SetCursorPosX(110)
+  ImGui.SetNextItemWidth(165)
 
-  ImGui.Text('Delete Group: ')
-  ImGui.SameLine()
-  ImGui.SetCursorPosX(100)
-  ImGui.SetNextItemWidth(150)
-  DeleteGroup, _ = ImGui.InputText('##DeleteGroup', DeleteGroup or '')
-  ImGui.SameLine()
-  if ImGui.Button(string.format(ICONS.FA_USER_TIMES)) then mq.cmdf('/groups %s delete', DeleteGroup); refresh_sections_from_ini() end
-  HelpMarker('Delete Group Using Exact Name (including the player CleanName_ prefix).')
+  -- Visible input: only the suffix. We add CleanName_ invisibly when saving.
+  SaveGroup, _ = ImGui.InputText('##SaveGroup', SaveGroup or '')
+  HelpMarker('Save Group (the player CleanName_ prefix is added automatically).')
+  ImGui.Spacing()
 
   if ImGui.Button(string.format(ICONS.FA_USERS)) then mq.cmd('/dgae /notify GroupWindow GW_DisbandButton leftmouseup') end
   HelpMarker('Disband All Groups')
 
   ImGui.SameLine()
-  if ImGui.Button(string.format(ICONS.FA_BOLT)) then mq.cmdf('/dex %s /notify MMGW_ManageWnd MMGW_SuspendButton leftmouseup', safe(function() return mq.TLO.Target.Owner and mq.TLO.Target.Owner() end) or '') end
-  HelpMarker('Target Mercenary and click to Remove Mercenary From Group')
+  if ImGui.Button(string.format(ICONS.FA_USER_TIMES)) then mq.cmdf('/dex %s /notify MMGW_ManageWnd MMGW_SuspendButton leftmouseup', safe(function() return mq.TLO.Target.Owner and mq.TLO.Target.Owner() end) or '') end
+  HelpMarker('Target Merc Sends Suspend Command to Owner')
 
   ImGui.SameLine()
   -- UI: set a pending_pop request; do not perform blocking waits here
@@ -909,14 +900,14 @@ local function main()
     local tType = safe(function() return mq.TLO.Target.Type and mq.TLO.Target.Type() end) or ''
     pending_pop = { targetID = tonumber(tID) or 0, owner = owner, tType = tType }
   end
-  HelpMarker('Target player and click to pop (unsuspend) their merc')
+  HelpMarker('Target Player Sends Command to Un-Suspend Their Merc')
 
   ImGui.SameLine()
   if ImGui.Button(string.format(ICONS.MD_SECURITY)) then
     pending_scan = true
     pending_scan_suspend = true
   end
-  HelpMarker('Suspend ACTIVE mercs in zone (to members of groups)')
+  HelpMarker('Suspend All Groups Mercs in Zone')
 
   ImGui.SameLine()
   if ImGui.Button(string.format(ICONS.MD_DONE)) then mq.cmd('/lua stop groups') end
@@ -1012,7 +1003,7 @@ local function main()
                   push_notification(('No saved members to disband for group "%s"'):format(groupName), {1,1,0,1})
                 end
               end
-              HelpMarker('Queue /dex <member> /disband to each saved member (processed on loop thread)')
+              HelpMarker('Queue /dex <member> /disband to each saved group member')
 
               -- Delete group button (next to Disband)
               ImGui.SameLine()
@@ -1022,6 +1013,7 @@ local function main()
                 push_notification(('Deleted group: %s'):format(groupName), {1,0,0,1})
                 refresh_sections_from_ini()
               end
+              HelpMarker('Delete this saved group from Groups.ini')
 
               -- Members and roles (show presence)
               for i = 0, MAX_GROUP_SLOTS - 1 do

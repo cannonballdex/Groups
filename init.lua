@@ -224,14 +224,6 @@ local function quote_name(name)
   return ('"%s"'):format(escaped)
 end
 
-local function get_group_label(groupName)
-  if type(groupName) ~= 'string' then return '' end
-  local underscore_pos = groupName:find('_', 1, true)
-  if not underscore_pos then return '' end
-  local label = groupName:sub(underscore_pos + 1)
-  return (label ~= '' and label) or ''
-end
-
 -- Class/level helpers -------------------------------------------------------
 local function get_member_class_level(member)
   if not member or member == '' then return nil, nil end
@@ -763,12 +755,10 @@ local function groups_cmd(name, action)
     end
     save_settings()
     refresh_sections_from_ini()
-    output('\ayMade group \"'..candidate..'\"...\ax')
   elseif action == 'delete' then
     settings[name] = nil
     save_settings()
     refresh_sections_from_ini()
-    output('\ayDeleted group \"'..name..'\"...\ax')
   else
     if settings[name] ~= nil then
       local count = 0
@@ -789,8 +779,7 @@ local function groups_cmd(name, action)
         end
       end
     else
-      output('\arGroup \at\"'..name..'\" \ardoes not exist... \aytry again.')
-      push_notification(('Group: %s does not exist...'):format(name), {1,0,0,1})
+      push_notification(('\arGroup \at"%s" \ardoes not exist... \aytry again.'):format(name), {1,0,0,1})
     end
   end
 end
@@ -852,7 +841,7 @@ local function main()
   end
 
   ImGui.Spacing()
-  
+
   -- Save handler: prepend CleanName_ invisibly when issuing the save command
   if ImGui.Button(string.format('%s Add Group', ICONS.FA_USER_PLUS)) then
     local suffix = tostring(SaveGroup or '')
@@ -916,6 +905,10 @@ local function main()
   ImGui.SameLine()
   if ImGui.Button(string.format(ICONS.MD_DONE_ALL)) then mq.cmd('/dgae /lua stop groups') end
   HelpMarker('Stop Groups On All Toons')
+
+  ImGui.SameLine()
+  if ImGui.Button(string.format(ICONS.MD_CACHED)) then mq.cmd('/groups_reload') end
+  HelpMarker('Force Reload Groups.ini')
 
   -- show target merc info if applicable
   if safe(function() return mq.TLO.Target and mq.TLO.Target() end) and safe(function() return mq.TLO.Target.Type and mq.TLO.Target.Type() end) == 'Mercenary' then

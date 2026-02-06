@@ -120,4 +120,3 @@ Notes:
 
 ## License & attribution
 - The LCP Config Parser contains contributions and attributions (see `LCP.lua` for license header).
-- This implementation and rebranding are by cannonballdex and are derived from earlier MakeCrew/Crew work.

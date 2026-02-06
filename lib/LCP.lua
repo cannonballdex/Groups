@@ -183,5 +183,3 @@ function LCP.save(fileName, data)
   local ok, ren_err = os.rename(tmp, fileName)
   if not ok then error('LCP.save: rename failed: ' .. tostring(ren_err)) end
 end
-
-return LCP
